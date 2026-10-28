@@ -3,20 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Бърз Експорт | Буфер към .TXT</title>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;600&display=swap" rel="stylesheet">
+    <!-- Техническа забрана на браузъра да изпраща данни към каквито и да е външни сървъри -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'unsafe-inline'; script-src 'unsafe-inline'; connect-src 'none'; img-src 'self' data:;">
+    <meta name="description" content="Напълно поверителен локален инструмент за превръщане на копиран текст от буфера директно в .txt файл на вашето устройство без сървърен запис.">
+    <title>Текстомат | 100% Поверителен Експорт в .TXT</title>
     <style>
         :root {
-            --bg-dark: rgb(9, 13, 22);
-            --card-bg: rgba(22, 31, 48, 0.78);
-            --card-border: rgba(255, 255, 255, 0.12);
+            --bg-dark: rgb(7, 11, 19);
+            --card-bg: rgba(18, 26, 41, 0.88);
+            --card-border: rgba(16, 185, 129, 0.28);
             --emerald: rgb(16, 185, 129);
-            --emerald-glow: rgba(16, 185, 129, 0.35);
+            --emerald-glow: rgba(16, 185, 129, 0.3);
             --gold: rgb(245, 158, 11);
-            --gold-glow: rgba(245, 158, 11, 0.35);
-            --danger: rgb(239, 68, 68);
+            --gold-glow: rgba(245, 158, 11, 0.3);
             --text-main: rgb(248, 250, 252);
             --text-muted: rgb(148, 163, 184);
         }
@@ -31,28 +30,26 @@
         body {
             background-color: var(--bg-dark);
             background-image: 
-                radial-gradient(circle at 15% 15%, rgba(16, 185, 129, 0.15) 0%, transparent 45%),
-                radial-gradient(circle at 85% 85%, rgba(59, 130, 246, 0.12) 0%, transparent 45%);
+                radial-gradient(circle at 20% 10%, rgba(16, 185, 129, 0.14) 0%, transparent 45%),
+                radial-gradient(circle at 80% 90%, rgba(14, 165, 233, 0.1) 0%, transparent 45%);
             color: var(--text-main);
-            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            padding: 18px 14px;
+            padding: 16px 14px;
         }
 
         .container {
             width: 100%;
             max-width: 480px;
             background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid var(--card-border);
-            border-radius: 28px;
-            padding: 26px 22px;
-            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.7);
+            border: 1.5px solid var(--card-border);
+            border-radius: 26px;
+            padding: 24px 20px;
+            box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.8);
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -61,104 +58,91 @@
             box-shadow: 0 20px 50px -10px var(--gold-glow);
         }
 
-        /* Заглавна част */
         .header {
             text-align: center;
-            margin-bottom: 20px;
+            margin-bottom: 16px;
         }
 
-        .badge {
+        .privacy-shield {
             display: inline-flex;
             align-items: center;
-            gap: 6px;
-            background: rgba(16, 185, 129, 0.14);
-            color: var(--emerald);
-            border: 1px solid rgba(16, 185, 129, 0.3);
-            padding: 5px 12px;
+            gap: 7px;
+            background: rgba(16, 185, 129, 0.15);
+            color: rgb(110, 231, 183);
+            border: 1px solid rgba(16, 185, 129, 0.4);
+            padding: 6px 14px;
             border-radius: 999px;
             font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.4px;
+            font-weight: 700;
+            letter-spacing: 0.3px;
             margin-bottom: 10px;
         }
 
-        .badge-dot {
-            width: 8px;
-            height: 8px;
-            background-color: var(--emerald);
-            border-radius: 50%;
-            box-shadow: 0 0 8px var(--emerald);
-        }
-
         h1 {
-            font-size: 24px;
+            font-size: 23px;
             font-weight: 800;
-            letter-spacing: -0.5px;
+            letter-spacing: -0.4px;
             margin-bottom: 6px;
-            background: linear-gradient(135deg, rgb(255, 255, 255) 0%, rgb(203, 213, 225) 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: rgb(255, 255, 255);
         }
 
         .subtitle {
-            font-size: 13.5px;
+            font-size: 13px;
             color: var(--text-muted);
-            line-height: 1.4;
+            line-height: 1.45;
         }
 
-        /* 3 лесни стъпки за потребителите */
-        .steps {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 8px;
-            margin-bottom: 20px;
-            background: rgba(15, 23, 42, 0.6);
-            padding: 12px 10px;
+        /* Панел за гаранция на тайната */
+        .vault-notice {
+            background: rgba(16, 185, 129, 0.08);
+            border: 1px solid rgba(16, 185, 129, 0.25);
             border-radius: 16px;
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            padding: 12px 14px;
+            margin-bottom: 18px;
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            text-align: left;
         }
 
-        .step-item {
-            text-align: center;
-            font-size: 11.5px;
-            color: var(--text-muted);
-            line-height: 1.3;
+        .vault-icon {
+            font-size: 20px;
+            line-height: 1;
+            margin-top: 2px;
         }
 
-        .step-num {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            width: 22px;
-            height: 22px;
-            background: rgba(16, 185, 129, 0.2);
-            color: var(--emerald);
-            font-weight: 700;
-            border-radius: 50%;
-            margin-bottom: 5px;
+        .vault-text {
             font-size: 12px;
+            color: rgb(203, 213, 225);
+            line-height: 1.45;
         }
 
-        /* Главен бутон за експорт */
+        .vault-text strong {
+            color: rgb(110, 231, 183);
+            display: block;
+            margin-bottom: 2px;
+            font-size: 12.5px;
+        }
+
+        /* Главен бутон */
         .btn-primary {
-            position: relative;
             width: 100%;
             background: linear-gradient(135deg, rgb(16, 185, 129) 0%, rgb(5, 150, 105) 100%);
             color: rgb(255, 255, 255);
             border: none;
             border-radius: 18px;
-            padding: 20px 18px;
+            padding: 19px 16px;
             font-family: inherit;
-            font-size: 17px;
-            font-weight: 700;
+            font-size: 16.5px;
+            font-weight: 800;
             cursor: pointer;
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 10px;
             box-shadow: 0 10px 25px -5px var(--emerald-glow);
-            transition: transform 0.15s ease, box-shadow 0.2s ease, background 0.3s ease;
-            margin-bottom: 16px;
+            transition: transform 0.12s ease, background 0.3s ease;
+            margin-bottom: 14px;
         }
 
         .btn-primary:active {
@@ -175,11 +159,11 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            background: rgba(15, 23, 42, 0.75);
+            background: rgba(9, 13, 22, 0.8);
             border: 1px solid rgba(255, 255, 255, 0.08);
             border-radius: 12px;
             padding: 10px 14px;
-            margin-bottom: 16px;
+            margin-bottom: 14px;
             font-size: 12.5px;
         }
 
@@ -188,60 +172,29 @@
         }
 
         .file-name-live {
-            font-family: 'JetBrains Mono', monospace;
+            font-family: monospace;
             color: var(--emerald);
-            font-weight: 600;
-            font-size: 12.5px;
+            font-weight: 700;
+            font-size: 13px;
         }
 
-        /* Статистика на текста */
-        .stats-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 10px;
-            margin-bottom: 16px;
-        }
-
-        .stat-box {
-            background: rgba(15, 23, 42, 0.55);
-            border: 1px solid rgba(255, 255, 255, 0.07);
-            border-radius: 14px;
-            padding: 10px 8px;
-            text-align: center;
-        }
-
-        .stat-val {
-            font-size: 18px;
-            font-weight: 800;
-            color: var(--text-main);
-            font-family: 'JetBrains Mono', monospace;
-        }
-
-        .stat-lbl {
-            font-size: 11px;
-            color: var(--text-muted);
-            margin-top: 2px;
-        }
-
-        /* Текстово поле за директно поставяне */
+        /* Текстово поле без памет */
         .editor-wrap {
-            position: relative;
-            margin-bottom: 14px;
+            margin-bottom: 12px;
         }
 
         textarea {
             width: 100%;
-            height: 125px;
-            background: rgba(9, 13, 22, 0.85);
+            height: 115px;
+            background: rgba(7, 11, 19, 0.9);
             color: var(--text-main);
             border: 2px solid rgba(255, 255, 255, 0.12);
             border-radius: 16px;
-            padding: 14px;
+            padding: 13px;
             font-family: inherit;
             font-size: 14px;
-            line-height: 1.5;
+            line-height: 1.45;
             resize: none;
-            transition: border-color 0.2s ease;
         }
 
         textarea::placeholder {
@@ -253,7 +206,6 @@
             border-color: var(--emerald);
         }
 
-        /* Вторични бутони (Изчисти / Свали пак) */
         .actions-row {
             display: flex;
             gap: 10px;
@@ -261,7 +213,7 @@
 
         .btn-secondary {
             flex: 1;
-            background: rgba(255, 255, 255, 0.07);
+            background: rgba(255, 255, 255, 0.06);
             color: var(--text-main);
             border: 1px solid rgba(255, 255, 255, 0.1);
             border-radius: 12px;
@@ -270,61 +222,41 @@
             font-size: 13px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.2s;
-        }
-
-        .btn-secondary:active {
-            background: rgba(255, 255, 255, 0.15);
         }
 
         .btn-clear {
             color: rgb(252, 165, 165);
         }
 
-        /* Статус съобщение */
         .status-banner {
             display: none;
             margin-top: 14px;
             padding: 12px 14px;
             border-radius: 12px;
-            font-size: 13.5px;
+            font-size: 13px;
             font-weight: 600;
             text-align: center;
+            line-height: 1.4;
         }
 
         .status-banner.show {
             display: block;
         }
 
-        /* Списък с последно свалени файлове */
-        .history {
-            margin-top: 18px;
-            border-top: 1px solid rgba(255, 255, 255, 0.08);
-            padding-top: 14px;
-            display: none;
-        }
-
-        .history-title {
-            font-size: 12px;
-            color: var(--text-muted);
-            margin-bottom: 8px;
-            font-weight: 600;
-        }
-
-        .history-item {
+        .security-footer {
+            margin-top: 16px;
+            padding-top: 12px;
+            border-top: 1px solid rgba(255, 255, 255, 0.07);
             display: flex;
-            justify-content: space-between;
-            align-items: center;
-            background: rgba(15, 23, 42, 0.5);
-            padding: 8px 12px;
-            border-radius: 10px;
-            font-size: 12px;
-            margin-bottom: 6px;
-            font-family: 'JetBrains Mono', monospace;
+            justify-content: space-around;
+            font-size: 11px;
+            color: var(--text-muted);
         }
 
-        .history-meta {
-            color: var(--emerald);
+        .sec-badge {
+            display: flex;
+            align-items: center;
+            gap: 4px;
         }
     </style>
 </head>
@@ -332,26 +264,18 @@
 
     <div class="container" id="appCard">
         <div class="header">
-            <div class="badge">
-                <span class="badge-dot"></span>
-                АВТОМАТИЧЕН ЕКСПОРТ В .TXT
+            <div class="privacy-shield">
+                🔒 100% ЛОКАЛНА ПОВЕРИТЕЛНОСТ
             </div>
-            <h1>Буфер към Файл</h1>
-            <p class="subtitle">Превърнете копирания текст в готов .txt документ с едно докосване</p>
+            <h1>Текстомат Сейф</h1>
+            <p class="subtitle">Директен запис от буфера във вашия телефон без сървърна намеса</p>
         </div>
 
-        <div class="steps">
-            <div class="step-item">
-                <div class="step-num">1</div>
-                <div>Копирайте желания текст</div>
-            </div>
-            <div class="step-item">
-                <div class="step-num">2</div>
-                <div>Натиснете зеления бутон</div>
-            </div>
-            <div class="step-item">
-                <div class="step-num">3</div>
-                <div>Файлът е в „Изтеглени"</div>
+        <div class="vault-notice">
+            <div class="vault-icon">🛡️</div>
+            <div class="vault-text">
+                <strong>Пълна тайна на вашите данни</strong>
+                Този сайт работи изцяло вътре във вашия телефон. Нищо не се изпраща по интернет, не се чете, не се анализира и не се пази в история. След сваляне на файла, полето се самоизчиства автоматично.
             </div>
         </div>
 
@@ -361,39 +285,25 @@
         </button>
 
         <div class="file-preview-bar">
-            <span class="file-label">Име на файла:</span>
-            <span class="file-name-live" id="liveFileName">2026-10-28_09_35_00.txt</span>
-        </div>
-
-        <div class="stats-grid">
-            <div class="stat-box">
-                <div class="stat-val" id="charStat">0</div>
-                <div class="stat-lbl">Символи</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-val" id="lineStat">0</div>
-                <div class="stat-lbl">Редове</div>
-            </div>
-            <div class="stat-box">
-                <div class="stat-val" id="wordStat">0</div>
-                <div class="stat-lbl">Думи</div>
-            </div>
+            <span class="file-label">Файл за запис:</span>
+            <span class="file-name-live" id="liveFileName">2026-10-28_09_50_00.txt</span>
         </div>
 
         <div class="editor-wrap">
-            <textarea id="textInput" placeholder="Или докоснете тук и натиснете „Постави" (Paste) от клавиатурата – файлът ще се изтегли автоматично на секундата!"></textarea>
+            <textarea id="textInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Или докоснете тук и натиснете „Постави" (Paste) – файлът отива директно в телефона ви, а текстът тук се изтрива сам след 1 секунда!"></textarea>
         </div>
 
         <div class="actions-row">
-            <button class="btn-secondary" onclick="manualDownload()">💾 Свали текста от полето</button>
-            <button class="btn-secondary btn-clear" onclick="clearAll()">🗑️ Изчисти</button>
+            <button class="btn-secondary" onclick="manualDownload()">💾 Запиши от полето</button>
+            <button class="btn-secondary btn-clear" onclick="wipeMemory()">🧹 Изчисти веднага</button>
         </div>
 
         <div class="status-banner" id="statusBanner"></div>
 
-        <div class="history" id="historyBox">
-            <div class="history-title">Последно записани файлове:</div>
-            <div id="historyList"></div>
+        <div class="security-footer">
+            <span class="sec-badge">🚫 Без сървър</span>
+            <span class="sec-badge">🚫 Без бисквитки</span>
+            <span class="sec-badge">🧹 Авто-изтриване</span>
         </div>
     </div>
 
@@ -418,17 +328,6 @@
         setInterval(updateLiveClock, 1000);
         updateLiveClock();
 
-        function updateStats(text) {
-            var clean = text || '';
-            var chars = clean.length;
-            var lines = chars > 0 ? clean.split(/\r\n|\r|\n/).length : 0;
-            var words = chars > 0 ? clean.trim().split(/\s+/).filter(Boolean).length : 0;
-
-            document.getElementById('charStat').innerText = chars.toLocaleString('bg-BG');
-            document.getElementById('lineStat').innerText = lines.toLocaleString('bg-BG');
-            document.getElementById('wordStat').innerText = words.toLocaleString('bg-BG');
-        }
-
         function showStatus(msg, bgColor, textColor) {
             var banner = document.getElementById('statusBanner');
             banner.style.backgroundColor = bgColor;
@@ -437,18 +336,21 @@
             banner.classList.add('show');
         }
 
-        function addHistoryItem(fileName, charCount) {
-            var box = document.getElementById('historyBox');
-            var list = document.getElementById('historyList');
-            box.style.display = 'block';
-
-            var item = document.createElement('div');
-            item.className = 'history-item';
-            item.innerHTML = '<span>📄 ' + fileName + '</span><span class="history-meta">' + charCount.toLocaleString('bg-BG') + ' симв.</span>';
-            list.insertBefore(item, list.firstChild);
+        function wipeMemory() {
+            var input = document.getElementById('textInput');
+            input.value = '';
+            try {
+                localStorage.clear();
+                sessionStorage.clear();
+            } catch (e) {}
+            showStatus(
+                '🧹 Паметта на страницата е напълно изчистена. Няма останали следи.',
+                'rgba(148, 163, 184, 0.15)',
+                'rgb(203, 213, 225)'
+            );
         }
 
-        function triggerTxtDownload(content) {
+        function triggerPrivateDownload(content) {
             if (!content || content.length === 0) return;
 
             var fileName = getFormattedFileName();
@@ -461,16 +363,16 @@
             document.body.appendChild(a);
             a.click();
 
+            /* Незабавно унищожаване на временния обект и изчистване на текстовото поле */
             setTimeout(function() {
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
+                document.getElementById('textInput').value = '';
             }, 600);
 
             if (navigator.vibrate) {
-                navigator.vibrate([120, 40, 160]);
+                navigator.vibrate([100, 40, 140]);
             }
-
-            updateStats(content);
 
             var card = document.getElementById('appCard');
             var btn = document.getElementById('mainBtn');
@@ -479,16 +381,14 @@
 
             card.classList.add('success-state');
             btn.classList.add('downloaded');
-            btnIcon.innerText = '✅';
-            btnText.innerText = 'СВАЛЕН: ' + fileName;
+            btnIcon.innerText = '🔒';
+            btnText.innerText = 'ЗАПИСАН В ТЕЛЕФОНА: ' + fileName;
 
             showStatus(
-                '✅ Файлът ' + fileName + ' (' + content.length.toLocaleString('bg-BG') + ' символа) е записан в папка „Изтеглени"!',
+                '✅ Файлът ' + fileName + ' е в папка „Изтеглени". Текстът от екрана беше автоматично заличен за ваша сигурност!',
                 'rgba(16, 185, 129, 0.18)',
                 'rgb(110, 231, 183)'
             );
-
-            addHistoryItem(fileName, content.length);
 
             setTimeout(function() {
                 card.classList.remove('success-state');
@@ -504,13 +404,12 @@
             if (navigator.clipboard && navigator.clipboard.readText) {
                 navigator.clipboard.readText().then(function(clipText) {
                     if (clipText && clipText.length > 0) {
-                        input.value = clipText;
-                        triggerTxtDownload(clipText);
+                        triggerPrivateDownload(clipText);
                     } else if (input.value && input.value.length > 0) {
-                        triggerTxtDownload(input.value);
+                        triggerPrivateDownload(input.value);
                     } else {
                         showStatus(
-                            '⚠️ Буферът в момента е празен! Копирайте текст или го поставете директно в полето по-долу.',
+                            '⚠️ Буферът е празен! Копирайте текст или го поставете директно в полето по-долу.',
                             'rgba(239, 68, 68, 0.2)',
                             'rgb(252, 165, 165)'
                         );
@@ -518,10 +417,10 @@
                     }
                 }).catch(function() {
                     if (input.value && input.value.length > 0) {
-                        triggerTxtDownload(input.value);
+                        triggerPrivateDownload(input.value);
                     } else {
                         showStatus(
-                            '👆 Докоснете текстовото поле по-долу и натиснете „Постави" (Paste) – файлът ще се свали веднага!',
+                            '👆 Докоснете полето по-долу и натиснете „Постави" (Paste) – файлът ще се свали веднага, а текстът ще се самоизтрие!',
                             'rgba(245, 158, 11, 0.2)',
                             'rgb(253, 224, 71)'
                         );
@@ -530,13 +429,8 @@
                 });
             } else {
                 if (input.value && input.value.length > 0) {
-                    triggerTxtDownload(input.value);
+                    triggerPrivateDownload(input.value);
                 } else {
-                    showStatus(
-                        '👆 Поставете текста в полето по-долу за автоматично изтегляне!',
-                        'rgba(245, 158, 11, 0.2)',
-                        'rgb(253, 224, 71)'
-                    );
                     input.focus();
                 }
             }
@@ -545,10 +439,10 @@
         function manualDownload() {
             var val = document.getElementById('textInput').value;
             if (val && val.length > 0) {
-                triggerTxtDownload(val);
+                triggerPrivateDownload(val);
             } else {
                 showStatus(
-                    '⚠️ Полето е празно! Първо поставете текст вътре.',
+                    '⚠️ Полето е празно! Поставете текст вътре.',
                     'rgba(239, 68, 68, 0.2)',
                     'rgb(252, 165, 165)'
                 );
@@ -556,25 +450,13 @@
             }
         }
 
-        function clearAll() {
-            var input = document.getElementById('textInput');
-            input.value = '';
-            updateStats('');
-            document.getElementById('statusBanner').classList.remove('show');
-        }
-
-        /* Автоматично сваляне веднага при поставяне (Paste) в текстовото поле */
         document.getElementById('textInput').addEventListener('paste', function() {
             var self = this;
             setTimeout(function() {
                 if (self.value && self.value.length > 0) {
-                    triggerTxtDownload(self.value);
+                    triggerPrivateDownload(self.value);
                 }
             }, 80);
-        });
-
-        document.getElementById('textInput').addEventListener('input', function() {
-            updateStats(this.value);
         });
     </script>
 </body>
