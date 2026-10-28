@@ -4,17 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <meta http-equiv="Content-Security-Policy" content="default-src 'self' 'unsafe-inline' blob:; connect-src 'none';">
-    <meta name="description" content="Поверителен локален инструмент за превръщане на копиран текст от буфера в .txt файл за Android, Samsung Z Fold, iOS и компютри.">
+    <meta name="description" content="Директно локално преобразуване на системния буфер в .txt файл на вашето устройство без текстови полета и без визуален достъп.">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Текстомат">
-    <title>Текстомат | Сейф за .TXT</title>
+    <title>Текстомат | Директен Локален .TXT</title>
     <style>
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-user-select: none;
         }
 
         body {
@@ -22,7 +24,7 @@
             color: #f8fafc;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
             min-height: 100vh;
-            padding: 16px 12px;
+            padding: 18px 14px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -31,13 +33,13 @@
 
         .container {
             width: 100%;
-            max-width: 480px;
-            background-color: #121a29;
+            max-width: 460px;
+            background-color: #111827;
             border: 2px solid #10b981;
-            border-radius: 26px;
-            padding: 24px 20px;
-            box-shadow: 0 20px 45px rgba(0, 0, 0, 0.8);
-            text-align: left;
+            border-radius: 28px;
+            padding: 28px 22px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.85);
+            text-align: center;
             transition: all 0.25s ease;
         }
 
@@ -45,48 +47,45 @@
             display: block;
         }
 
-        /* 1. ANDROID ПРОФИЛ (Изумруден стил за работа с палец) */
+        /* 1. ANDROID ПРОФИЛ */
         body.theme-android {
-            background-color: #060d0b;
+            background-color: #050b09;
         }
         body.theme-android .container {
-            background-color: #0f1c18;
+            background-color: #0d1915;
             border-color: #10b981;
         }
-        body.theme-android .btn-primary {
+        body.theme-android .btn-trigger {
             background-color: #10b981;
             border-radius: 999px;
         }
 
-        /* 2. SAMSUNG Z FOLD ПРОФИЛ (Двуколонен Split-View за разгънат екран) */
+        /* 2. SAMSUNG Z FOLD ПРОФИЛ (Split-View за разгънат екран) */
         body.theme-fold {
             background-color: #050811;
             padding: 24px 20px;
         }
         body.theme-fold .container {
-            max-width: 860px;
+            max-width: 820px;
             background-color: #0e1526;
             border-color: #3b82f6;
-            padding: 28px;
+            padding: 32px 28px;
+            text-align: left;
         }
         body.theme-fold .grid-layout {
             display: grid;
-            grid-template-columns: 45% 55%;
-            gap: 24px;
-            align-items: start;
+            grid-template-columns: 48% 52%;
+            gap: 26px;
+            align-items: center;
         }
         body.theme-fold .col-left {
-            padding-right: 12px;
+            padding-right: 16px;
             border-right: 1px solid #1e293b;
         }
-        body.theme-fold .col-right {
-            padding-right: 12px;
-        }
-        body.theme-fold .btn-primary {
+        body.theme-fold .btn-trigger {
             background-color: #2563eb;
-            border-radius: 18px;
-            padding: 22px 16px;
-            font-size: 17px;
+            border-radius: 20px;
+            padding: 26px 18px;
         }
         body.theme-fold .device-pill {
             background-color: #1e3a8a;
@@ -94,26 +93,26 @@
             border-color: #3b82f6;
         }
 
-        /* 3. APPLE iOS ПРОФИЛ (iPhone & iPad) */
+        /* 3. APPLE iOS ПРОФИЛ */
         body.theme-ios {
             background-color: #000000;
         }
         body.theme-ios .container {
             background-color: #1c1c1e;
             border: 1.5px solid #38383a;
-            border-radius: 22px;
+            border-radius: 24px;
         }
-        body.theme-ios .btn-primary {
+        body.theme-ios .btn-trigger {
             background-color: #007aff;
-            border-radius: 14px;
-            box-shadow: 0 6px 20px rgba(0, 122, 255, 0.35);
+            border-radius: 16px;
+            box-shadow: 0 8px 25px rgba(0, 122, 255, 0.35);
         }
         body.theme-ios .device-pill {
             background-color: #002b5c;
             color: #64d2ff;
             border-color: #007aff;
         }
-        body.theme-ios .vault-notice {
+        body.theme-ios .zero-touch-box {
             background-color: #142238;
             border-color: #007aff;
         }
@@ -123,18 +122,18 @@
 
         /* 4. НАСТОЛЕН КОМПЮТЪР (Windows / Mac / Linux) */
         body.theme-desktop {
-            background-color: #0b0f17;
+            background-color: #090d16;
         }
         body.theme-desktop .container {
-            max-width: 550px;
-            background-color: #161f30;
+            max-width: 520px;
+            background-color: #151e2e;
             border: 1.5px solid #0ea5e9;
-            border-radius: 14px;
+            border-radius: 16px;
         }
-        body.theme-desktop .btn-primary {
+        body.theme-desktop .btn-trigger {
             background-color: #0284c7;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(2, 132, 199, 0.35);
+            border-radius: 12px;
+            box-shadow: 0 6px 20px rgba(2, 132, 199, 0.35);
         }
         body.theme-desktop .device-pill {
             background-color: #0c4a6e;
@@ -142,14 +141,9 @@
             border-color: #0ea5e9;
         }
 
-        /* ОБЩИ ЕЛЕМЕНТИ */
+        /* ОБЩИ СТИЛОВЕ */
         .container.success-state {
             border-color: #f59e0b !important;
-        }
-
-        .header {
-            text-align: center;
-            margin-bottom: 14px;
         }
 
         .device-pill {
@@ -157,100 +151,87 @@
             background-color: #064e3b;
             color: #6ee7b7;
             border: 1px solid #10b981;
-            padding: 5px 13px;
+            padding: 6px 14px;
             border-radius: 30px;
             font-size: 11.5px;
             font-weight: 700;
-            margin-bottom: 8px;
+            margin-bottom: 12px;
         }
 
         h1 {
-            font-size: 22px;
+            font-size: 24px;
             font-weight: 800;
-            margin-bottom: 5px;
+            margin-bottom: 6px;
             color: #ffffff;
+            letter-spacing: -0.3px;
         }
 
         .subtitle {
-            font-size: 13px;
+            font-size: 13.5px;
             color: #94a3b8;
-            line-height: 1.4;
+            line-height: 1.45;
+            margin-bottom: 18px;
         }
 
-        .vault-notice {
+        .zero-touch-box {
             background-color: #0f292a;
             border: 1px solid #047857;
-            border-radius: 14px;
-            padding: 12px;
-            margin-bottom: 14px;
-            font-size: 12px;
+            border-radius: 16px;
+            padding: 14px 16px;
+            margin-bottom: 18px;
+            font-size: 12.5px;
             color: #cbd5e1;
-            line-height: 1.45;
+            line-height: 1.5;
+            text-align: left;
         }
 
-        .vault-notice strong {
+        .zero-touch-box strong {
             color: #6ee7b7;
             display: block;
-            margin-bottom: 3px;
-            font-size: 12.5px;
+            margin-bottom: 4px;
+            font-size: 13px;
         }
 
-        .smart-guide {
-            background-color: #1e293b;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 10px 12px;
-            margin-bottom: 14px;
-            font-size: 12.5px;
-            color: #f1f5f9;
-            text-align: center;
-            line-height: 1.4;
-        }
-
-        .kbd-key {
-            display: inline-block;
-            background-color: #0f172a;
-            border: 1px solid #475569;
-            border-radius: 5px;
-            padding: 1px 6px;
-            font-family: monospace;
-            font-size: 11.5px;
-            color: #38bdf8;
-            font-weight: 700;
-            margin: 0 2px;
-        }
-
-        .btn-primary {
+        .btn-trigger {
             display: block;
             width: 100%;
             background-color: #10b981;
             color: #ffffff;
             border: none;
-            border-radius: 16px;
-            padding: 18px 14px;
-            font-size: 16px;
-            font-weight: 700;
+            border-radius: 18px;
+            padding: 24px 18px;
+            font-size: 17px;
+            font-weight: 800;
             cursor: pointer;
             text-align: center;
-            margin-bottom: 12px;
-            box-shadow: 0 6px 20px rgba(16, 185, 129, 0.3);
+            margin-bottom: 16px;
+            box-shadow: 0 10px 28px rgba(16, 185, 129, 0.35);
+            transition: transform 0.12s ease, background-color 0.25s ease;
         }
 
-        .btn-primary:active {
-            transform: scale(0.98);
+        .btn-trigger:active {
+            transform: scale(0.97);
         }
 
-        .btn-primary.downloaded {
+        .btn-trigger.downloaded {
             background-color: #d97706 !important;
         }
 
+        .btn-subtext {
+            display: block;
+            font-size: 12px;
+            font-weight: 500;
+            opacity: 0.9;
+            margin-top: 5px;
+        }
+
         .file-preview-bar {
-            background-color: #090d16;
+            background-color: #080c14;
             border: 1px solid #1e293b;
-            border-radius: 12px;
-            padding: 10px 12px;
+            border-radius: 14px;
+            padding: 12px 14px;
             margin-bottom: 12px;
-            font-size: 12.5px;
+            font-size: 13px;
             text-align: center;
         }
 
@@ -263,60 +244,34 @@
             font-family: monospace;
             color: #10b981;
             font-weight: 700;
-            font-size: 13px;
+            font-size: 13.5px;
         }
 
-        .editor-wrap {
-            margin-bottom: 12px;
-        }
-
-        textarea {
-            display: block;
-            width: 100%;
-            height: 115px;
-            background-color: #070b13;
-            color: #ffffff;
-            border: 2px solid #334155;
-            border-radius: 14px;
-            padding: 12px;
-            font-family: inherit;
-            font-size: 16px;
-            line-height: 1.4;
-            resize: none;
-        }
-
-        textarea:focus {
-            outline: none;
-            border-color: #38bdf8;
-        }
-
-        .actions-row {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-        }
-
-        .btn-secondary {
-            background-color: #1e293b;
-            color: #f8fafc;
-            border: 1px solid #334155;
-            border-radius: 12px;
-            padding: 12px 8px;
-            font-size: 13px;
-            font-weight: 700;
-            cursor: pointer;
+        .kbd-hint {
+            font-size: 12px;
+            color: #94a3b8;
+            margin-top: 8px;
             text-align: center;
         }
 
-        .btn-clear {
-            color: #fca5a5;
+        .kbd-key {
+            display: inline-block;
+            background-color: #0f172a;
+            border: 1px solid #475569;
+            border-radius: 5px;
+            padding: 2px 7px;
+            font-family: monospace;
+            font-size: 11.5px;
+            color: #38bdf8;
+            font-weight: 700;
+            margin: 0 2px;
         }
 
         .status-banner {
             display: none;
             margin-top: 14px;
-            padding: 12px;
-            border-radius: 12px;
+            padding: 13px;
+            border-radius: 14px;
             font-size: 13px;
             font-weight: 700;
             text-align: center;
@@ -324,12 +279,12 @@
         }
 
         .security-footer {
-            margin-top: 16px;
-            padding-top: 12px;
+            margin-top: 20px;
+            padding-top: 14px;
             border-top: 1px solid #1e293b;
             display: flex;
             justify-content: space-around;
-            font-size: 11px;
+            font-size: 11.5px;
             color: #94a3b8;
         }
     </style>
@@ -339,41 +294,31 @@
     <div class="container" id="appCard">
         <div class="grid-layout">
             <div class="col-left">
-                <div class="header">
-                    <div class="device-pill" id="deviceBadge">
-                        🔒 ЛОКАЛЕН СЕЙФ
-                    </div>
-                    <h1>Текстомат Сейф</h1>
-                    <p class="subtitle" id="subTitle">Поверителен запис на буфера директно в .TXT файл</p>
+                <div class="device-pill" id="deviceBadge">
+                    🛡️ ЗАЩИТЕН ЛОКАЛЕН МОСТ
                 </div>
+                <h1>Текстомат</h1>
+                <p class="subtitle" id="subTitle">Преобразува вашия буфер директно във файл на устройството ви</p>
 
-                <div class="vault-notice">
-                    <strong>🛡️ 100% Тайна на вашите данни</strong>
-                    Сайтът работи изцяло вътре във вашето устройство. Нищо не се изпраща по интернет, не се следи и не се пази в история. Веднага след сваляне на файла, полето се самоизчиства автоматично.
-                </div>
-
-                <div class="file-preview-bar">
-                    <span class="file-label">Файл за запис:</span>
-                    <span class="file-name-live" id="liveFileName">2026-10-28_10_00_00.txt</span>
+                <div class="zero-touch-box">
+                    <strong>👁️‍🗨️ Сайтът няма полета за въвеждане</strong>
+                    Вашият текст никога не се показва на този екран и не влиза в страницата. При натискане на бутона устройството ви само опакова копирания текст в .TXT файл директно във вашата папка „Изтеглени".
                 </div>
             </div>
 
             <div class="col-right">
-                <div class="smart-guide" id="smartGuide">
-                    Натиснете главния бутон или поставете текста в полето по-долу.
-                </div>
-
-                <button type="button" class="btn-primary" id="mainBtn" onclick="handleSmartExport()">
-                    📥 ЗАПИШИ БУФЕРА В .TXT ФАЙЛ
+                <button type="button" class="btn-trigger" id="mainBtn" onclick="directLocalBridge()">
+                    <span id="btnMainTitle">📥 СВАЛИ БУФЕРА КАТО .TXT ФАЙЛ</span>
+                    <span class="btn-subtext" id="btnSubTitle">Директно във вашето устройство • Без показване на екрана</span>
                 </button>
 
-                <div class="editor-wrap">
-                    <textarea id="textInput" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Поставете текста тук – файлът се сваля веднага, а текстът се самоизтрива!"></textarea>
+                <div class="file-preview-bar">
+                    <span class="file-label">Име на файла:</span>
+                    <span class="file-name-live" id="liveFileName">2026-10-28_10_00_00.txt</span>
                 </div>
 
-                <div class="actions-row">
-                    <button type="button" class="btn-secondary" onclick="manualDownload()">💾 Запиши от полето</button>
-                    <button type="button" class="btn-secondary btn-clear" id="clearBtn" onclick="wipeMemory()">🧹 Изчисти веднага</button>
+                <div class="kbd-hint" id="deviceHint">
+                    Едно докосване създава файла директно във вашия телефон
                 </div>
 
                 <div class="status-banner" id="statusBanner"></div>
@@ -381,14 +326,14 @@
         </div>
 
         <div class="security-footer">
-            <span>🔒 100% Локално</span>
-            <span>🚫 Без сървър</span>
-            <span>🧹 Авто-изтриване</span>
+            <span>🚫 Без текстови полета</span>
+            <span>🔒 Нулев достъп</span>
+            <span>⚡ 100% В устройството</span>
         </div>
     </div>
 
     <script>
-        var isExporting = false;
+        var isBusy = false;
         var currentProfile = {
             isWindows: false,
             isIOS: false
@@ -414,7 +359,6 @@
         setInterval(updateLiveClock, 1000);
         updateLiveClock();
 
-        /* Разпознаване само на 4-те реални работни групи: Z Fold, Android, iOS и Компютър */
         function detectAndApplyDeviceProfile() {
             var ua = navigator.userAgent || '';
             var platform = navigator.platform || '';
@@ -425,17 +369,16 @@
             var body = document.getElementById('bodyRoot');
             var badge = document.getElementById('deviceBadge');
             var subTitle = document.getElementById('subTitle');
-            var guide = document.getElementById('smartGuide');
-            var mainBtn = document.getElementById('mainBtn');
-            var input = document.getElementById('textInput');
-            var clearBtn = document.getElementById('clearBtn');
+            var btnMain = document.getElementById('btnMainTitle');
+            var btnSub = document.getElementById('btnSubTitle');
+            var hint = document.getElementById('deviceHint');
 
             var isIOS = /iPad|iPhone|iPod/.test(ua) || (platform === 'MacIntel' && navigator.maxTouchPoints > 1);
             var isFoldModel = /SM-F9|SM-W20|SM-W90|Fold/i.test(ua);
             var isTouch = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
             var isFoldUnfolded = isTouch && !isIOS && w >= 560 && w <= 980 && ratio < 1.38;
             var isWindows = /Windows|Win32|Win64/i.test(ua);
-            var isDesktop = !isTouch || /Windows|Macintosh|Linux x86_64/i.test(ua) && !/Android/i.test(ua);
+            var isDesktop = !isTouch || (/Windows|Macintosh|Linux x86_64/i.test(ua) && !/Android/i.test(ua));
 
             currentProfile.isWindows = isWindows;
             currentProfile.isIOS = isIOS;
@@ -443,47 +386,42 @@
             if (isFoldModel || isFoldUnfolded) {
                 if (w >= 560) {
                     body.className = 'theme-fold';
-                    badge.innerHTML = '📱 SAMSUNG Z FOLD • РАЗГЪНАТ РЕЖИМ';
-                    subTitle.innerHTML = 'Двуколонен интерфейс за две ръце и мултитаскинг';
-                    guide.innerHTML = '✨ <b>Z Fold Split-View:</b> Докоснете синия бутон вдясно с палец или пуснете текст от съседното приложение!';
+                    badge.innerHTML = '📱 SAMSUNG Z FOLD • ДИРЕКТЕН МОСТ';
+                    subTitle.innerHTML = 'Двуколонен режим за разгънат екран без текстови кутии';
                 } else {
                     body.className = 'theme-android';
                     badge.innerHTML = '📱 SAMSUNG Z FOLD • ВЪНШЕН ЕКРАН';
-                    subTitle.innerHTML = 'Компактен режим за една ръка (разгънете за 2 колони)';
-                    guide.innerHTML = '⚡ Натиснете зеления бутон за 1-клик запис или разгънете телефона.';
+                    subTitle.innerHTML = 'Мигновено преобразуване на буфера с една ръка';
                 }
-                mainBtn.innerHTML = '📥 ЗАПИШИ БУФЕРА В .TXT';
-                input.placeholder = 'Или докоснете тук и изберете текста от лентата на клавиатурата Samsung...';
-                clearBtn.innerHTML = '🧹 Изчисти';
+                btnMain.innerHTML = '📥 СВАЛИ БУФЕРА КАТО .TXT ФАЙЛ';
+                btnSub.innerHTML = 'Отива директно в папка „Изтеглени" на телефона';
+                hint.innerHTML = '✨ Работи без въвеждане и без показване на текста';
             }
             else if (isIOS) {
                 body.className = 'theme-ios';
-                badge.innerHTML = '🍏 APPLE iOS • РЕЖИМ „ФАЙЛОВЕ"';
-                subTitle.innerHTML = 'Оптимизиран за iPhone и iPad (Safari)';
-                guide.innerHTML = '🍏 <b>За iPhone / iPad:</b> Докоснете полето долу и натиснете <b>„Постави" (Paste)</b> – файлът се записва веднага във „Файлове"!';
-                mainBtn.innerHTML = '📥 ЗАПИШИ ВЪВ „ФАЙЛОВЕ" (.TXT)';
-                input.placeholder = 'Докоснете тук и натиснете „Постави" (Paste) за мигновено сваляне...';
-                clearBtn.innerHTML = '🧹 Изчисти';
+                badge.innerHTML = '🍏 APPLE iOS • ДИРЕКТЕН ФАЙЛОВ ПОТОК';
+                subTitle.innerHTML = 'Прехвърля буфера директно в приложението „Файлове" на iPhone/iPad';
+                btnMain.innerHTML = '📥 СВАЛИ ВЪВ „ФАЙЛОВЕ" (.TXT)';
+                btnSub.innerHTML = 'Директно на вашия iPhone • Без полета за писане';
+                hint.innerHTML = '🍏 Докоснете бутона и потвърдете системното балонче на Apple';
             }
             else if (isDesktop) {
                 body.className = 'theme-desktop';
                 var isMac = /Macintosh|Mac OS X/i.test(ua);
                 var shortcut = isMac ? '⌘ Cmd + V' : 'Ctrl + V';
-                badge.innerHTML = isWindows ? '💻 WINDOWS КОМПЮТЪР • НАСТОЛЕН РЕЖИМ' : '🖥️ НАСТОЛЕН КОМПЮТЪР • КЛАВИАТУРЕН РЕЖИМ';
-                subTitle.innerHTML = isWindows ? 'Автоматичен UTF-8 BOM и CRLF за чиста кирилица в Notepad' : 'Мигновен експорт от системния буфер с клавишна комбинация';
-                guide.innerHTML = '⌨️ <b>Без кликване с мишката:</b> Просто натиснете <span class="kbd-key">' + shortcut + '</span> навсякъде в страницата и файлът се сваля сам!';
-                mainBtn.innerHTML = '📥 ЗАПИШИ БУФЕРА В .TXT (' + shortcut + ')';
-                input.placeholder = 'Натиснете ' + shortcut + ' навсякъде на екрана или поставете текста тук...';
-                clearBtn.innerHTML = '🧹 Изчисти (Esc)';
+                badge.innerHTML = isWindows ? '💻 WINDOWS • ДИРЕКТЕН ФАЙЛОВ МОСТ' : '🖥️ КОМПЮТЪР • ДИРЕКТЕН ФАЙЛОВ МОСТ';
+                subTitle.innerHTML = 'Преобразува буфера във файл без никакви полета за писане';
+                btnMain.innerHTML = '📥 СВАЛИ БУФЕРА КАТО .TXT ФАЙЛ';
+                btnSub.innerHTML = 'Или просто натиснете ' + shortcut + ' във въздуха';
+                hint.innerHTML = '⌨️ Клавишен пряк път: <span class="kbd-key">' + shortcut + '</span> сваля файла моментално без мишка';
             }
             else {
                 body.className = 'theme-android';
-                badge.innerHTML = '🤖 ANDROID СМАРТФОН • 1-КЛИК БУФЕР';
-                subTitle.innerHTML = 'Директен запис от буфера в папка „Изтеглени" (Downloads)';
-                guide.innerHTML = '⚡ <b>Бърз Режим:</b> Натиснете зеления бутон за директен запис или поставете текста от лентата над клавиатурата!';
-                mainBtn.innerHTML = '📥 ЗАПИШИ БУФЕРА В .TXT ФАЙЛ';
-                input.placeholder = 'Или докоснете тук и изберете копирания текст от лентата над клавиатурата...';
-                clearBtn.innerHTML = '🧹 Изчисти';
+                badge.innerHTML = '🤖 ANDROID • ДИРЕКТЕН ФАЙЛОВ МОСТ';
+                subTitle.innerHTML = 'Преобразува вашия буфер директно във файл в папка „Изтеглени"';
+                btnMain.innerHTML = '📥 СВАЛИ БУФЕРА КАТО .TXT ФАЙЛ';
+                btnSub.innerHTML = 'Директно в телефона • Без показване на текста';
+                hint.innerHTML = '⚡ Едно докосване създава файла директно в „Изтеглени"';
             }
         }
 
@@ -497,21 +435,12 @@
             banner.innerHTML = msg;
         }
 
-        function wipeMemory() {
-            document.getElementById('textInput').value = '';
-            try {
-                localStorage.clear();
-                sessionStorage.clear();
-            } catch (e) {}
-            showStatus('🧹 Паметта е напълно изчистена. Няма останали следи.', '#1e293b', '#cbd5e1');
-        }
-
-        function triggerPrivateDownload(content) {
-            if (!content || content.length === 0 || isExporting) return;
-            isExporting = true;
+        function createFileDirectlyOnDevice(rawContent) {
+            if (!rawContent || rawContent.length === 0 || isBusy) return;
+            isBusy = true;
 
             var fileName = getFormattedFileName();
-            var normalized = content.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
+            var normalized = rawContent.replace(/\r\n/g, '\n').replace(/\r/g, '\n');
             if (currentProfile.isWindows) {
                 normalized = normalized.replace(/\n/g, '\r\n');
             }
@@ -527,12 +456,14 @@
             document.body.appendChild(a);
             a.click();
 
+            /* Незабавно освобождаване на обекта без нищо да се задържа */
             setTimeout(function() {
                 document.body.removeChild(a);
                 URL.revokeObjectURL(url);
-                document.getElementById('textInput').value = '';
-                isExporting = false;
-            }, 600);
+                rawContent = null;
+                finalData = null;
+                isBusy = false;
+            }, 500);
 
             if (navigator.vibrate) {
                 navigator.vibrate(150);
@@ -540,13 +471,16 @@
 
             var card = document.getElementById('appCard');
             var btn = document.getElementById('mainBtn');
+            var btnMain = document.getElementById('btnMainTitle');
+            var btnSub = document.getElementById('btnSubTitle');
 
             card.classList.add('success-state');
             btn.classList.add('downloaded');
-            btn.innerHTML = '🔒 ЗАПИСАН: ' + fileName;
+            btnMain.innerHTML = '✅ ГОТОВО: ' + fileName;
+            btnSub.innerHTML = 'Файлът е директно във вашето устройство';
 
             showStatus(
-                '✅ Файлът ' + fileName + ' е свален. Текстът от екрана беше автоматично заличен!',
+                '✅ ' + fileName + ' е в папка „Изтеглени" на устройството ви (без показване на екрана).',
                 '#064e3b',
                 '#6ee7b7'
             );
@@ -555,71 +489,37 @@
                 card.classList.remove('success-state');
                 btn.classList.remove('downloaded');
                 detectAndApplyDeviceProfile();
-            }, 3800);
+            }, 3500);
         }
 
-        function handleSmartExport() {
-            var input = document.getElementById('textInput');
-
-            if (input.value && input.value.length > 0) {
-                triggerPrivateDownload(input.value);
-                return;
-            }
-
+        function directLocalBridge() {
             if (navigator.clipboard && navigator.clipboard.readText) {
                 navigator.clipboard.readText().then(function(clipText) {
                     if (clipText && clipText.length > 0) {
-                        triggerPrivateDownload(clipText);
+                        createFileDirectlyOnDevice(clipText);
                     } else {
-                        showStatus('⚠️ Буферът е празен! Копирайте текст или го поставете в полето.', '#450a0a', '#fca5a5');
-                        input.focus();
+                        showStatus('⚠️ В момента няма копиран текст във вашия буфер.', '#450a0a', '#fca5a5');
                     }
                 }).catch(function() {
-                    if (currentProfile.isIOS) {
-                        showStatus('🍏 На iPhone/iPad докоснете полето долу и натиснете „Постави" (Paste) – файлът се сваля веднага!', '#002b5c', '#64d2ff');
-                    } else {
-                        showStatus('👆 Поставете текста в полето долу (или натиснете Ctrl+V) за автоматичен запис!', '#451a03', '#fde047');
-                    }
-                    input.focus();
+                    showStatus(
+                        '🔒 Браузърът ви пита за разрешение да подаде буфера към файла – изберете „Разреши" (Allow) от системното прозорче.',
+                        '#451a03',
+                        '#fde047'
+                    );
                 });
             } else {
-                input.focus();
+                showStatus('⚠️ Вашият браузър изисква натискане на Ctrl+V за директно сваляне.', '#451a03', '#fde047');
             }
         }
 
-        function manualDownload() {
-            var input = document.getElementById('textInput');
-            if (input.value && input.value.length > 0) {
-                triggerPrivateDownload(input.value);
-            } else {
-                showStatus('⚠️ Полето е празно! Поставете текст вътре.', '#450a0a', '#fca5a5');
-                input.focus();
-            }
-        }
-
+        /* Директно сваляне при натискане на Ctrl+V / Cmd+V във въздуха (без никакво текстово поле на екрана) */
         document.addEventListener('paste', function(e) {
             if (e.clipboardData && e.clipboardData.getData) {
                 var pastedText = e.clipboardData.getData('text/plain');
                 if (pastedText && pastedText.length > 0) {
                     e.preventDefault();
-                    triggerPrivateDownload(pastedText);
+                    createFileDirectlyOnDevice(pastedText);
                 }
-            }
-        });
-
-        var textArea = document.getElementById('textInput');
-        textArea.addEventListener('input', function() {
-            if (this.value && this.value.length > 3) {
-                var val = this.value;
-                setTimeout(function() {
-                    triggerPrivateDownload(val);
-                }, 150);
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if (e.key === 'Escape') {
-                wipeMemory();
             }
         });
 
